@@ -2445,8 +2445,18 @@ function gerarSkuNome(nome) {
 function loadClientes() {
   try {
     const saved = localStorage.getItem('hp_clientes');
-    if (saved) return JSON.parse(saved);
-  } catch(e) {}
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Se tem menos de 10 clientes, é cache antigo — descarta e recarrega
+      if (parsed.length < 10) {
+        localStorage.removeItem('hp_clientes');
+      } else {
+        return parsed;
+      }
+    }
+  } catch(e) {
+    localStorage.removeItem('hp_clientes');
+  }
   const defaults = CLIENTES_BASE.map((nome, i) => ({
     id: i+1, nome, contato:'', cidade:'', telefone:'', prazo:'30 dias', produtos:[]
   }));
