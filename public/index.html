@@ -1315,6 +1315,215 @@ table.price input:focus { border-color: var(--accent); }
 #toast.ok   { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
 #toast.warn { background: var(--amber-bg); color: var(--amber-dim); border: 1px solid var(--cta-border); }
 #toast.err  { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+
+/* ── Modal alterar senha ── */
+.modal-pw {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(3px);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.modal-pw.open { opacity: 1; pointer-events: all; }
+.modal-pw-box {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--r-lg);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-float);
+  transform: translateY(10px);
+  transition: transform .2s;
+}
+.modal-pw.open .modal-pw-box { transform: none; }
+.modal-pw-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-pw-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+.modal-pw-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.modal-pw-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ── Modal edição cliente ── */
+.modal-cliente {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(4px);
+  z-index: 700;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.modal-cliente.open { opacity: 1; pointer-events: all; }
+.modal-cliente-box {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--r-lg);
+  width: 100%;
+  max-width: 700px;
+  box-shadow: var(--shadow-float);
+  transform: translateY(12px);
+  transition: transform .2s;
+  margin: auto;
+}
+.modal-cliente.open .modal-cliente-box { transform: none; }
+.modal-cliente-header {
+  padding: 16px 22px 14px;
+  border-bottom: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg-raised);
+  z-index: 2;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+.modal-cliente-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.modal-cliente-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 18px; }
+.modal-cliente-footer {
+  padding: 14px 22px;
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-raised);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+/* Seletor de produtos */
+.prod-search-wrap { position: relative; }
+.prod-search-input {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 8px 11px;
+  width: 100%;
+  outline: none;
+  transition: border-color .15s;
+}
+.prod-search-input:focus { border-color: var(--accent); }
+.prod-search-input::placeholder { color: var(--text-ghost); }
+
+.prod-lista {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r);
+  background: var(--bg-inset);
+  margin-top: 6px;
+}
+.prod-lista-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-dim);
+  transition: background .1s;
+  font-size: 13px;
+}
+.prod-lista-item:last-child { border-bottom: none; }
+.prod-lista-item:hover { background: var(--accent-bg); }
+.prod-lista-item input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
+.prod-lista-item.selected { background: var(--accent-bg); }
+
+.prod-selecionados { display: flex; flex-direction: column; gap: 6px; }
+.prod-sel-row {
+  display: grid;
+  grid-template-columns: 1fr 110px 28px;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r);
+  font-size: 12px;
+}
+.prod-sel-nome { color: var(--text-primary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prod-sel-preco {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r);
+  padding: 4px 7px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 12px;
+  width: 100%;
+  outline: none;
+  text-align: right;
+}
+.prod-sel-preco:focus { border-color: var(--accent); }
+.prod-sel-del {
+  background: none;
+  border: none;
+  color: var(--text-ghost);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: color .12s;
+}
+.prod-sel-del:hover { color: #dc2626; }
+.prod-sel-header {
+  display: grid;
+  grid-template-columns: 1fr 110px 28px;
+  gap: 8px;
+  padding: 0 10px 4px;
+}
+.prod-sel-header span {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.prod-sel-header span:nth-child(2) { text-align: right; }
 </style>
 </head>
 <body>
@@ -1622,7 +1831,16 @@ table.price input:focus { border-color: var(--accent); }
     <div class="rule"></div>
 
     <div class="card">
-      <div class="card-header"><div class="card-label">Clientes <span>Cadastrados</span></div></div>
+      <div class="card-header">
+        <div class="card-label">Clientes <span>Cadastrados</span></div>
+        <div id="clientes-count" style="font-size:11px;color:var(--text-muted)"></div>
+      </div>
+      <div class="card-body" style="padding-bottom:10px;padding-top:10px">
+        <input type="text" class="prod-search-input" id="clientes-busca"
+               placeholder="Buscar cliente pelo nome..."
+               oninput="renderClientesTable(this.value)"
+               style="max-width:320px">
+      </div>
       <div class="list-wrap">
         <table class="list">
           <thead>
@@ -1635,32 +1853,7 @@ table.price input:focus { border-color: var(--accent); }
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="td-name">Celso</td>
-              <td>Celso Oliveira</td>
-              <td>Londrina / PR</td>
-              <td>30 dias</td>
-              <td><span class="stamp stamp-rust">8 produtos</span></td>
-              <td class="action">Editar</td>
-            </tr>
-            <tr>
-              <td class="td-name">Distribuidora Norte</td>
-              <td>Paulo Mendes</td>
-              <td>Maringá / PR</td>
-              <td>28 dias</td>
-              <td><span class="stamp stamp-rust">5 produtos</span></td>
-              <td class="action">Editar</td>
-            </tr>
-            <tr>
-              <td class="td-name">Agro Sul Embalagens</td>
-              <td>Fátima Costa</td>
-              <td>Cascavel / PR</td>
-              <td>21 dias</td>
-              <td><span class="stamp stamp-rust">3 produtos</span></td>
-              <td class="action">Editar</td>
-            </tr>
-          </tbody>
+          <tbody id="clientes-tbody"></tbody>
         </table>
       </div>
     </div>
@@ -1770,55 +1963,26 @@ table.price input:focus { border-color: var(--accent); }
     <div class="rule"></div>
 
     <div class="card">
-      <div class="card-header"><div class="card-label">Produtos <span>Cadastrados</span></div></div>
+      <div class="card-header">
+        <div class="card-label">Produtos <span>Cadastrados</span></div>
+        <div id="produtos-count" style="font-size:11px;color:var(--text-muted)"></div>
+      </div>
+      <div class="card-body" style="padding-bottom:10px;padding-top:10px">
+        <input type="text" class="prod-search-input" id="produtos-busca"
+               placeholder="Buscar produto pelo nome..."
+               oninput="renderProdutosTable(this.value)"
+               style="max-width:320px">
+      </div>
       <div class="list-wrap">
         <table class="list">
           <thead>
             <tr>
               <th>SKU</th>
               <th>Nome do Produto</th>
-              <th>Categoria</th>
-              <th>Peso unit.</th>
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight:600;color:var(--accent);font-size:11px;letter-spacing:.08em">100L-BL-REF-PTO</td>
-              <td class="td-name">100L BL REF Preto</td>
-              <td><span class="stamp stamp-draft">Embalagem Industrial</span></td>
-              <td>5,0 kg</td>
-              <td class="action">Editar</td>
-            </tr>
-            <tr>
-              <td style="font-weight:600;color:var(--accent);font-size:11px;letter-spacing:.08em">200L-REF-PTO</td>
-              <td class="td-name">200L REF Preto</td>
-              <td><span class="stamp stamp-draft">Embalagem Industrial</span></td>
-              <td>5,0 kg</td>
-              <td class="action">Editar</td>
-            </tr>
-            <tr>
-              <td class="td-sku">60L-REF-PTO</td>
-              <td class="td-name">60L REF Preto</td>
-              <td><span class="stamp stamp-draft">Embalagem Industrial</span></td>
-              <td>3,0 kg</td>
-              <td class="action">Editar</td>
-            </tr>
-            <tr>
-              <td class="td-sku">20L-FINO-PTO</td>
-              <td class="td-name">20L Fino Preto</td>
-              <td><span class="stamp stamp-draft">Uso Geral</span></td>
-              <td>1,5 kg</td>
-              <td class="action">Editar</td>
-            </tr>
-            <tr>
-              <td class="td-sku">100L-BL-REF-PTO-SAN</td>
-              <td class="td-name">100L BL REF Preto – Sanfonado</td>
-              <td><span class="stamp stamp-draft">Embalagem Industrial</span></td>
-              <td>5,2 kg</td>
-              <td class="action">Editar</td>
-            </tr>
-          </tbody>
+          <tbody id="produtos-tbody"></tbody>
         </table>
       </div>
     </div>
@@ -1903,6 +2067,13 @@ table.price input:focus { border-color: var(--accent); }
 
     <!-- Logout -->
     <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-ghost" onclick="openChangePw()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="2" y="6" width="9" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M4 6V4a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Alterar Senha
+      </button>
       <button class="btn btn-ghost" onclick="doLogout()">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
           <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h3M9 9.5l3-3-3-3M12 6.5H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2198,13 +2369,93 @@ const sb = {
   },
 };
 
+/* ── Catálogo de produtos ── */
+const CATALOGO = [
+  "100L REF Preto","100L BL Fino Preto","100L BL REF Preto","100L REF Branco",
+  "100L Fino Preto","100L P14 Preto","100L P4 Preto","100L P4 Verde",
+  "100L P5 Preto","100L P6 Preto","100L P7 Preto","100L Fino Preto - 5uni",
+  "110x130 Fino Canela - Sanfonado","110x130 Médio Canela - Sanfonado",
+  "110x130 REF Canela - Sanfonado","120x120 REF Canela - Sanfonado",
+  "15L P1 Preto","15L REF Preto",
+  "200L P10 Preto","200L P5 Preto","200L P6 Preto","200L P6 Verde",
+  "200L P8 Preto","200L REF Preto","200L REF Canela",
+  "20L REF Branco","20L Fino Preto","20L P1.5 Preto","20L Fino Branco",
+  "20L REF Preto","20L Fino Preto - 20uni",
+  "20x160 REF Canela","28x160 REF Canela",
+  "300L Médio Preto","300L REF Preto","300L P10 Preto",
+  "30L P2 Preto","30L REF Preto",
+  "30x100 Fino Canela","35x100 Fino Canela","35x45 Fino Branco","35x55 Fino Canela",
+  "40L REF Branco","40L Fino Branco","40L Fino Preto",
+  "40L P2.5 Preto","40L REF Preto","40L Fino Preto - 10uni",
+  "40x125 Fino Canela","40x55 Fino Canela","40x58 REF Canela",
+  "40x60 Fino Canela","42x37 Fino Canela","Bobina Canela",
+  "50x170 Médio Canela","50x35 Médio Canela - Sanfonado","50x65 Médio Canela",
+  "50x70 Médio Cristal","50x80 Médio Branco","50x80 Fino Canela - Sanfonado",
+  "59x54 Médio Canela - Sanfonado",
+  "60L P3 Preto","60L P5 Preto","60L REF Branco","60L Fino Branco",
+  "60L Fino Preto","60L REF Preto","60L Fino Preto - 10uni",
+  "60x100 Fino Canela","60x105 Fino Azul","60x200 REF Cristal",
+  "60x200 REF Preto","60x80 REF Canela","60x80 REF Cristal",
+  "60x85 Médio Vermelho","60x90 Médio Canela","60x90 Médio Azul",
+  "64x55 Médio Canela","65x100 REF Canela",
+  "70x100 REF Canela","70x110 REF Canela","70x120 REF Canela",
+  "70x140 REF Canela","70x85 REF Cristal",
+  "72x95 REF Canela","75x95 Fino Canela",
+  "Bobina REF Canela","75x100 REF Canela","75x120 REF Canela",
+  "75x120 REF Canela - Sanfonado","75x125 REF Canela",
+  "80L REF Preto",
+  "80x100 REF Canela","80x125 REF Canela","80x95 REF Canela",
+  "83x100 REF Canela - Sanfonado","85x125 REF Canela",
+  "95x105 REF Canela","95x113 REF Canela - Sanfonado",
+  "95x150 REF Canela","95x180 REF Canela",
+  "Bobina 30cm REF Canela","Bobina 45cm Médio Canela","Bobina 50cm Médio Canela",
+  "Bobina 60cm REF Canela","Bobina 70cm Médio Canela","Bobina 75cm Médio Canela",
+];
+
+/* ── Clientes base ── */
+const CLIENTES_BASE = [
+  "A7 Embalagens","Acquaflex","Ana Condomínio","Arican","Brasil Tropical",
+  "Caebi","Celso","Danilo","DellMac","Delthane","Elias","Elisio","Emerson",
+  "Fátima","Fernando","Frigosan","Frigosuin","Giovane","Império da Limpeza",
+  "Inova Limp","Jadilson","Jair","Josué","Kamy","Lauro","Lukmar","Mané",
+  "Manoel","Matheus","Maycon","Mazinho","Mercado","Monique","MR Plating",
+  "Na Porta","Naturale","Posto BR","Priscila","Raul","RR Security","SD Coifas",
+  "Senhora de Nós","Serginho","Skimpack","Sky Master","Sonic Clean","Toninho",
+  "Turim Bella","Um Metro","Uni Brasil","Vila Beach","Zeka","Rough Collie",
+];
+
 /* ── Cache local (fallback offline + evitar re-fetches) ── */
 const cache = {
   clientes: [],
-  produtos:  [],
+  produtos:  CATALOGO.map((nome,i) => ({ id: i+1, sku: gerarSkuNome(nome), nome })),
   pedidoSeq: 109,
   ano: new Date().getFullYear(),
 };
+
+/* Gera SKU simples a partir do nome do produto */
+function gerarSkuNome(nome) {
+  return nome.toUpperCase()
+    .replace(/\s*-\s*/g,'-')
+    .replace(/\s+/g,'_')
+    .replace(/[^A-Z0-9_\-\.]/g,'')
+    .substring(0,30);
+}
+
+/* Inicializa clientes do localStorage ou usa base padrão */
+function loadClientes() {
+  try {
+    const saved = localStorage.getItem('hp_clientes');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  const defaults = CLIENTES_BASE.map((nome, i) => ({
+    id: i+1, nome, contato:'', cidade:'', telefone:'', prazo:'30 dias', produtos:[]
+  }));
+  localStorage.setItem('hp_clientes', JSON.stringify(defaults));
+  return defaults;
+}
+function saveClientes(clientes) {
+  localStorage.setItem('hp_clientes', JSON.stringify(clientes));
+}
 
 /* ══════════════════════════════════════════════════
    INIT
@@ -2231,7 +2482,11 @@ async function initApp() {
 }
 
 async function loadDataFromSupabase() {
-  if (!sb.ready()) { refreshNum(); return; }
+  if (!sb.ready()) {
+    cache.clientes = loadClientes();
+    refreshNum();
+    return;
+  }
 
   setDbStatus('loading');
   try {
@@ -2243,6 +2498,7 @@ async function loadDataFromSupabase() {
         nome:     c.empresa || c.nome,
         contato:  c.contato,
         cidade:   c.cidade_uf,
+        telefone: c.telefone || '',
         prazo:    c.prazo_pagamento,
         produtos: (c.precos_cliente || []).map(p => ({
           sku:   p.produtos?.sku   || '',
@@ -2252,6 +2508,8 @@ async function loadDataFromSupabase() {
           prod_id: p.produto_id,
         })).filter(p => p.sku),
       }));
+    } else {
+      cache.clientes = loadClientes();
     }
 
     // Último número de pedido do ano atual
@@ -2267,6 +2525,7 @@ async function loadDataFromSupabase() {
   } catch(e) {
     console.error('Erro ao carregar dados:', e);
     setDbStatus('error');
+    cache.clientes = loadClientes();
     refreshNum();
   }
 }
@@ -2654,12 +2913,15 @@ function copyVal(id) {
    USUÁRIOS — armazenamento local (substituir por Supabase Auth em prod)
    ══════════════════════════════════════════════════ */
 function loadUsers() {
-  const saved = localStorage.getItem('hp_users');
-  if (saved) return JSON.parse(saved);
-  // Usuários padrão — TROCAR antes de produção
+  try {
+    const saved = localStorage.getItem('hp_users');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  // Usuários padrão iniciais
   const defaults = [
-    { email: 'admin@humaita.com.br', pw: 'admin123', role: 'admin' },
-    { email: 'vendas@humaita.com.br', pw: 'vendas123', role: 'vendas' },
+    { email: 'alexsperandio@hotmail.com', pw: 'admin123', role: 'admin' },
+    { email: 'admin@humaita.com.br',      pw: 'admin123', role: 'admin' },
+    { email: 'vendas@humaita.com.br',     pw: 'vendas123', role: 'vendas' },
   ];
   localStorage.setItem('hp_users', JSON.stringify(defaults));
   return defaults;
@@ -2674,12 +2936,22 @@ function saveUsers(users) {
 let currentSession = null;
 
 function checkSession() {
-  const s = sessionStorage.getItem('hp_session');
-  if (s) {
-    currentSession = JSON.parse(s);
-    showApp();
+  try {
+    const s = sessionStorage.getItem('hp_session');
+    if (s) {
+      currentSession = JSON.parse(s);
+      // Sessão expira após 8 horas
+      if (Date.now() - currentSession.ts > 8 * 60 * 60 * 1000) {
+        sessionStorage.removeItem('hp_session');
+        currentSession = null;
+        return;
+      }
+      showApp();
+    }
+  } catch(e) {
+    sessionStorage.removeItem('hp_session');
   }
-  // Se não tem sessão, login-screen já está visível
+  // Se não tem sessão válida, login-screen fica visível
 }
 
 async function doLogin() {
@@ -2755,6 +3027,8 @@ function showApp() {
       currentSession ? currentSession.email : '—';
   }
   renderUsers();
+  renderClientesTable();
+  renderProdutosTable();
 }
 
 async function doLogout() {
@@ -2776,15 +3050,17 @@ async function doLogout() {
 
 function togglePw(inputId, btn) {
   const input = document.getElementById(inputId);
-  const isText = input.type === 'text';
-  input.type = isText ? 'password' : 'text';
-  btn.innerHTML = isText
+  if (!input) return;
+  const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  // olho aberto = senha visível, olho riscado = senha oculta
+  btn.innerHTML = show
     ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.2"/>
-        <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M2 2l12 12M6.5 6.6A2 2 0 0010 9.4M4.2 4.3C2.7 5.3 1.5 7 1.5 8c0 0 2.2 5 6.5 5 1.4 0 2.6-.4 3.6-1M7 3.1C7.2 3 7.3 3 7.5 3c4.5 0 7 5 7 5s-.5 1-1.5 2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
        </svg>`
     : `<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M2 2l12 12M6.5 6.6A2 2 0 0010 9.4M4.2 4.3C2.7 5.3 1.5 7 1.5 8c0 0 2.2 5 6.5 5 1.4 0 2.6-.4 3.6-1M7 3.1C7.2 3 7.3 3 7.5 3c4.5 0 7 5 7 5s-.5 1-1.5 2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/>
        </svg>`;
 }
 
@@ -2870,6 +3146,8 @@ async function adicionarUsuario() {
       showToast(`Usuário ${email} adicionado localmente.`, 'ok');
     }
     renderUsers();
+  renderClientesTable();
+  renderProdutosTable();
     document.getElementById('new-email').value = '';
     document.getElementById('new-pw').value    = '';
   } catch(e) {
@@ -2892,6 +3170,8 @@ async function removeUser(idx) {
   users.splice(idx, 1);
   saveUsers(users);
   renderUsers();
+  renderClientesTable();
+  renderProdutosTable();
   showToast(`Acesso de ${target.email} removido.`, 'ok');
 }
 
@@ -2900,6 +3180,8 @@ function changeRole(idx, newRole) {
   users[idx].role = newRole;
   saveUsers(users);
   renderUsers();
+  renderClientesTable();
+  renderProdutosTable();
 }
 
 function gerarSenha() {
@@ -2933,7 +3215,393 @@ function showToast(msg, type = 'ok') {
   _toastTimer = setTimeout(() => t.className = '', 3500);
 }
 
+
+/* ── Alterar senha ── */
+function openChangePw() {
+  document.getElementById('pw-atual').value     = '';
+  document.getElementById('pw-nova').value      = '';
+  document.getElementById('pw-confirma').value  = '';
+  document.getElementById('pw-error').classList.remove('show');
+  document.getElementById('modal-pw').classList.add('open');
+  setTimeout(() => document.getElementById('pw-atual').focus(), 100);
+}
+
+function closeChangePw() {
+  document.getElementById('modal-pw').classList.remove('open');
+}
+
+function handlePwOverlay(e) {
+  if (e.target === document.getElementById('modal-pw')) closeChangePw();
+}
+
+function salvarNovaSenha() {
+  const atual    = document.getElementById('pw-atual').value;
+  const nova     = document.getElementById('pw-nova').value;
+  const confirma = document.getElementById('pw-confirma').value;
+  const errEl    = document.getElementById('pw-error');
+
+  errEl.classList.remove('show');
+
+  if (!atual || !nova || !confirma) {
+    errEl.textContent = 'Preencha todos os campos.';
+    errEl.classList.add('show'); return;
+  }
+  if (nova.length < 6) {
+    errEl.textContent = 'Nova senha deve ter ao menos 6 caracteres.';
+    errEl.classList.add('show'); return;
+  }
+  if (nova !== confirma) {
+    errEl.textContent = 'Nova senha e confirmação não coincidem.';
+    errEl.classList.add('show'); return;
+  }
+
+  const users = loadUsers();
+  const idx   = users.findIndex(u => u.email === currentSession?.email);
+
+  if (idx === -1) {
+    errEl.textContent = 'Usuário não encontrado.';
+    errEl.classList.add('show'); return;
+  }
+  if (users[idx].pw !== atual) {
+    errEl.textContent = 'Senha atual incorreta.';
+    errEl.classList.add('show'); return;
+  }
+
+  users[idx].pw = nova;
+  saveUsers(users);
+  closeChangePw();
+  showToast('Senha alterada com sucesso!', 'ok');
+}
+
+
+/* ══════════════════════════════════════════════════
+   TABELA DE CLIENTES
+   ══════════════════════════════════════════════════ */
+function renderClientesTable(busca) {
+  const tbody = document.getElementById('clientes-tbody');
+  const countEl = document.getElementById('clientes-count');
+  if (!tbody) return;
+
+  let clientes = loadClientes()
+    .sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+  if (busca && busca.trim()) {
+    const t = busca.toLowerCase().trim();
+    clientes = clientes.filter(c =>
+      c.nome.toLowerCase().includes(t) ||
+      (c.contato||'').toLowerCase().includes(t) ||
+      (c.cidade||'').toLowerCase().includes(t)
+    );
+  }
+
+  if (countEl) countEl.textContent = clientes.length + ' cliente' + (clientes.length !== 1 ? 's' : '');
+
+  if (!clientes.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">Nenhum cliente encontrado</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = clientes.map(c => `
+    <tr>
+      <td class="td-name">${c.nome}</td>
+      <td>${c.contato || '<span style="color:var(--text-ghost)">—</span>'}</td>
+      <td>${c.cidade  || '<span style="color:var(--text-ghost)">—</span>'}</td>
+      <td>${c.prazo   || '30 dias'}</td>
+      <td>${c.produtos?.length
+        ? '<span class="stamp stamp-rust">' + c.produtos.length + ' produto' + (c.produtos.length !== 1 ? 's' : '') + '</span>'
+        : '<span style="color:var(--text-ghost);font-size:11px">Nenhum</span>'}</td>
+      <td class="action" onclick="openCliente(${c.id})">Editar</td>
+    </tr>`).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   TABELA DE PRODUTOS
+   ══════════════════════════════════════════════════ */
+function renderProdutosTable(busca) {
+  const tbody   = document.getElementById('produtos-tbody');
+  const countEl = document.getElementById('produtos-count');
+  if (!tbody) return;
+
+  let lista = [...CATALOGO].sort((a,b) => a.localeCompare(b, 'pt-BR'));
+
+  if (busca && busca.trim()) {
+    const t = busca.toLowerCase().trim();
+    lista = lista.filter(p => p.toLowerCase().includes(t));
+  }
+
+  if (countEl) countEl.textContent = lista.length + ' produto' + (lista.length !== 1 ? 's' : '');
+
+  if (!lista.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">Nenhum produto encontrado</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = lista.map(nome => {
+    const sku = gerarSkuNome(nome);
+    return `<tr>
+      <td class="td-sku">${sku}</td>
+      <td class="td-name">${nome}</td>
+      <td class="action" style="cursor:default;color:var(--text-muted)">—</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   MODAL EDIÇÃO DE CLIENTE
+   ══════════════════════════════════════════════════ */
+let _editClienteId = null;
+let _editSelecionados = []; // [{ nome, preco }]
+
+function openCliente(id) {
+  const clientes = loadClientes();
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  _editClienteId = id;
+  _editSelecionados = (c.produtos || []).map(p => ({ nome: p.nome || p.sku, preco: p.preco || '' }));
+
+  document.getElementById('modal-cliente-titulo').textContent = 'Editar — ' + c.nome;
+  document.getElementById('ec-nome').value     = c.nome     || '';
+  document.getElementById('ec-contato').value  = c.contato  || '';
+  document.getElementById('ec-cidade').value   = c.cidade   || '';
+  document.getElementById('ec-telefone').value = c.telefone || '';
+  document.getElementById('ec-prazo').value    = c.prazo    || '30 dias';
+  document.getElementById('prod-busca').value  = '';
+
+  filtrarCatalogo('');
+  renderSelecionados();
+  document.getElementById('modal-cliente').classList.add('open');
+}
+
+function closeCliente() {
+  document.getElementById('modal-cliente').classList.remove('open');
+  _editClienteId = null;
+  _editSelecionados = [];
+}
+
+function handleClienteOverlay(e) {
+  if (e.target === document.getElementById('modal-cliente')) closeCliente();
+}
+
+function filtrarCatalogo(busca) {
+  const lista = document.getElementById('prod-lista-catalogo');
+  const termo = busca.toLowerCase().trim();
+  const itens = termo
+    ? CATALOGO.filter(p => p.toLowerCase().includes(termo))
+    : CATALOGO;
+
+  lista.innerHTML = itens.map(nome => {
+    const sel = _editSelecionados.some(s => s.nome === nome);
+    return `<div class="prod-lista-item ${sel ? 'selected' : ''}" onclick="toggleProdCatalogo('${nome.replace(/'/g,"\'")}')">
+      <input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation();toggleProdCatalogo('${nome.replace(/'/g,"\'")}')">
+      <span>${nome}</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleProdCatalogo(nome) {
+  const idx = _editSelecionados.findIndex(s => s.nome === nome);
+  if (idx >= 0) {
+    _editSelecionados.splice(idx, 1);
+  } else {
+    _editSelecionados.push({ nome, preco: '' });
+  }
+  filtrarCatalogo(document.getElementById('prod-busca').value);
+  renderSelecionados();
+}
+
+function renderSelecionados() {
+  const wrap = document.getElementById('prod-selecionados-wrap');
+  const lista = document.getElementById('prod-selecionados-lista');
+  if (!_editSelecionados.length) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  lista.innerHTML = _editSelecionados.map((p, i) => `
+    <div class="prod-sel-row">
+      <div class="prod-sel-nome" title="${p.nome}">${p.nome}</div>
+      <input class="prod-sel-preco" type="number" step="0.01" min="0"
+             value="${p.preco || ''}" placeholder="0,00"
+             onchange="updatePrecoSel(${i}, this.value)">
+      <button class="prod-sel-del" onclick="removerSel(${i})">×</button>
+    </div>`).join('');
+}
+
+function updatePrecoSel(i, v) {
+  _editSelecionados[i].preco = parseFloat(v) || '';
+}
+
+function removerSel(i) {
+  _editSelecionados.splice(i, 1);
+  filtrarCatalogo(document.getElementById('prod-busca').value);
+  renderSelecionados();
+}
+
+function salvarCliente() {
+  const nome = document.getElementById('ec-nome').value.trim();
+  if (!nome) { showToast('Preencha o nome do cliente.', 'err'); return; }
+
+  const clientes = loadClientes();
+  const idx = clientes.findIndex(c => c.id === _editClienteId);
+  if (idx === -1) return;
+
+  clientes[idx] = {
+    ...clientes[idx],
+    nome,
+    contato:  document.getElementById('ec-contato').value.trim(),
+    cidade:   document.getElementById('ec-cidade').value.trim(),
+    telefone: document.getElementById('ec-telefone').value.trim(),
+    prazo:    document.getElementById('ec-prazo').value,
+    produtos: _editSelecionados.map(p => ({
+      nome:  p.nome,
+      sku:   gerarSkuNome(p.nome),
+      preco: parseFloat(p.preco) || 0,
+      peso:  0,
+    })),
+  };
+
+  saveClientes(clientes);
+  // Atualizar cache
+  cache.clientes = clientes;
+  renderClientesTable();
+  closeCliente();
+  showToast('Cliente salvo com sucesso!', 'ok');
+}
+
 </script>
 <div id="toast"></div>
+
+<!-- ── Modal alterar senha ── -->
+<div class="modal-pw" id="modal-pw" onclick="handlePwOverlay(event)">
+  <div class="modal-pw-box">
+    <div class="modal-pw-header">
+      <div class="modal-pw-title">Alterar Senha</div>
+      <button class="modal-close" onclick="closeChangePw()">×</button>
+    </div>
+    <div class="modal-pw-body">
+      <div class="field">
+        <label>Senha atual</label>
+        <div class="pw-wrap">
+          <input type="password" id="pw-atual" placeholder="••••••••">
+          <button class="pw-toggle" type="button" onclick="togglePw('pw-atual',this)" tabindex="-1">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.2"/>
+              <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Nova senha</label>
+        <div class="pw-wrap">
+          <input type="password" id="pw-nova" placeholder="mínimo 6 caracteres">
+          <button class="pw-toggle" type="button" onclick="togglePw('pw-nova',this)" tabindex="-1">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.2"/>
+              <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Confirmar nova senha</label>
+        <div class="pw-wrap">
+          <input type="password" id="pw-confirma" placeholder="repita a nova senha"
+                 onkeydown="if(event.key==='Enter')salvarNovaSenha()">
+          <button class="pw-toggle" type="button" onclick="togglePw('pw-confirma',this)" tabindex="-1">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.2"/>
+              <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="login-error" id="pw-error"></div>
+    </div>
+    <div class="modal-pw-footer">
+      <button class="btn btn-ghost" onclick="closeChangePw()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarNovaSenha()">Salvar senha</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal edição de cliente ── -->
+<div class="modal-cliente" id="modal-cliente" onclick="handleClienteOverlay(event)">
+  <div class="modal-cliente-box">
+    <div class="modal-cliente-header">
+      <div class="modal-cliente-title" id="modal-cliente-titulo">Editar Cliente</div>
+      <button class="modal-close" onclick="closeCliente()">×</button>
+    </div>
+    <div class="modal-cliente-body">
+
+      <!-- Dados básicos -->
+      <div class="grid g2">
+        <div class="field">
+          <label>Nome / Empresa</label>
+          <input type="text" id="ec-nome" placeholder="Nome do cliente">
+        </div>
+        <div class="field">
+          <label>Contato</label>
+          <input type="text" id="ec-contato" placeholder="Nome do contato">
+        </div>
+      </div>
+      <div class="grid g3">
+        <div class="field">
+          <label>Cidade / UF</label>
+          <input type="text" id="ec-cidade" placeholder="Ex.: Londrina / PR">
+        </div>
+        <div class="field">
+          <label>Telefone</label>
+          <input type="text" id="ec-telefone" placeholder="(43) 99999-9999">
+        </div>
+        <div class="field">
+          <label>Prazo de Pagamento</label>
+          <select id="ec-prazo">
+            <option>À vista</option>
+            <option>7 dias</option>
+            <option>14 dias</option>
+            <option>21 dias</option>
+            <option>28 dias</option>
+            <option selected>30 dias</option>
+            <option>30/60 dias</option>
+            <option>45 dias</option>
+            <option>60 dias</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Produtos do catálogo -->
+      <div>
+        <div style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">
+          Produtos do catálogo
+        </div>
+        <div class="prod-search-wrap">
+          <input class="prod-search-input" type="text" id="prod-busca"
+                 placeholder="Buscar produto no catálogo..."
+                 oninput="filtrarCatalogo(this.value)">
+        </div>
+        <div class="prod-lista" id="prod-lista-catalogo"></div>
+      </div>
+
+      <!-- Produtos selecionados com preço -->
+      <div id="prod-selecionados-wrap" style="display:none">
+        <div style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px">
+          Produtos habilitados — defina o preço R$/kg
+        </div>
+        <div class="prod-sel-header">
+          <span>Produto</span>
+          <span>R$/kg</span>
+          <span></span>
+        </div>
+        <div class="prod-selecionados" id="prod-selecionados-lista"></div>
+      </div>
+
+    </div>
+    <div class="modal-cliente-footer">
+      <button class="btn btn-ghost" onclick="closeCliente()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarCliente()">Salvar cliente</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
