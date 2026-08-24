@@ -872,6 +872,11 @@ table.price input:focus { border-color: var(--accent); }
   box-shadow: 0 20px 60px rgba(0,0,0,.7);
   transform: translateY(12px);
   transition: transform .2s cubic-bezier(.2,.8,.4,1);
+  /* Nunca ultrapassa a altura da tela: o corpo rola e o rodapé
+     (com o botão Salvar) fica sempre visível. */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
 }
 .modal-overlay.open .modal { transform: none; }
 
@@ -903,7 +908,8 @@ table.price input:focus { border-color: var(--accent); }
 }
 .modal-close:hover { color: var(--text-primary); background: var(--border-dim); }
 
-.modal-body { padding: 20px 22px; }
+.modal-header, .modal-footer { flex-shrink: 0; }
+.modal-body { padding: 20px 22px; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
 .modal-footer {
   padding: 14px 22px;
   border-top: 1px solid var(--border-dim);
@@ -1341,6 +1347,9 @@ table.price input:focus { border-color: var(--accent); }
   box-shadow: var(--shadow-float);
   transform: translateY(10px);
   transition: transform .2s;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
 }
 .modal-pw.open .modal-pw-box { transform: none; }
 .modal-pw-header {
@@ -1357,11 +1366,15 @@ table.price input:focus { border-color: var(--accent); }
   color: var(--text-primary);
   letter-spacing: 0.04em;
 }
+.modal-pw-header, .modal-pw-footer { flex-shrink: 0; }
 .modal-pw-body {
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 .modal-pw-footer {
   padding: 12px 20px;
@@ -1398,6 +1411,9 @@ table.price input:focus { border-color: var(--accent); }
   transform: translateY(12px);
   transition: transform .2s;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
 }
 .modal-cliente.open .modal-cliente-box { transform: none; }
 .modal-cliente-header {
@@ -1418,7 +1434,16 @@ table.price input:focus { border-color: var(--accent); }
   font-weight: 700;
   color: var(--text-primary);
 }
-.modal-cliente-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 18px; }
+.modal-cliente-header, .modal-cliente-footer { flex-shrink: 0; }
+.modal-cliente-body {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 .modal-cliente-footer {
   padding: 14px 22px;
   border-top: 1px solid var(--border-dim);
@@ -1430,6 +1455,42 @@ table.price input:focus { border-color: var(--accent); }
   background: var(--bg-raised);
   border-radius: 0 0 var(--r-lg) var(--r-lg);
 }
+
+/* Barra de rolagem visível nas áreas que rolam (cards, modais e listas) */
+.modal-body, .modal-pw-body, .modal-cliente-body,
+.prod-lista, .list-wrap, .items-wrap, .price-wrap {
+  scrollbar-gutter: stable;
+}
+/* Só no Firefox: o Chrome/Safari ignoram ::-webkit-scrollbar quando
+   scrollbar-width/color estão definidos, e no macOS a barra "overlay"
+   some — que era o motivo de os cards parecerem sem rolagem. */
+@supports not selector(::-webkit-scrollbar) {
+  .modal-body, .modal-pw-body, .modal-cliente-body,
+  .prod-lista, .list-wrap, .items-wrap, .price-wrap {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-border) var(--bg-inset);
+  }
+}
+.modal-body::-webkit-scrollbar, .modal-pw-body::-webkit-scrollbar,
+.modal-cliente-body::-webkit-scrollbar, .prod-lista::-webkit-scrollbar,
+.list-wrap::-webkit-scrollbar, .items-wrap::-webkit-scrollbar,
+.price-wrap::-webkit-scrollbar { width: 10px; height: 10px; }
+.modal-body::-webkit-scrollbar-track, .modal-pw-body::-webkit-scrollbar-track,
+.modal-cliente-body::-webkit-scrollbar-track, .prod-lista::-webkit-scrollbar-track,
+.list-wrap::-webkit-scrollbar-track, .items-wrap::-webkit-scrollbar-track,
+.price-wrap::-webkit-scrollbar-track { background: var(--bg-inset); }
+.modal-body::-webkit-scrollbar-thumb, .modal-pw-body::-webkit-scrollbar-thumb,
+.modal-cliente-body::-webkit-scrollbar-thumb, .prod-lista::-webkit-scrollbar-thumb,
+.list-wrap::-webkit-scrollbar-thumb, .items-wrap::-webkit-scrollbar-thumb,
+.price-wrap::-webkit-scrollbar-thumb {
+  background: var(--accent-border);
+  border: 2px solid var(--bg-inset);
+  border-radius: 6px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover, .modal-pw-body::-webkit-scrollbar-thumb:hover,
+.modal-cliente-body::-webkit-scrollbar-thumb:hover, .prod-lista::-webkit-scrollbar-thumb:hover,
+.list-wrap::-webkit-scrollbar-thumb:hover, .items-wrap::-webkit-scrollbar-thumb:hover,
+.price-wrap::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* Seletor de produtos */
 .prod-search-wrap { position: relative; }
@@ -1645,7 +1706,7 @@ table.price input:focus { border-color: var(--accent); }
     <div class="pedido-meta">
       <div class="meta-cell">
         <div class="meta-label">Nº Pedido</div>
-        <div class="meta-value accent" id="num-pedido">0110/2026</div>
+        <div class="meta-value accent" id="num-pedido">2026-0110</div>
       </div>
       <div class="meta-cell">
         <div class="meta-label">Data</div>
@@ -2286,13 +2347,39 @@ const sb = {
     };
   },
 
-  /* SELECT — retorna array */
+  /* SELECT — retorna array COMPLETO.
+     O PostgREST devolve no máximo um número fixo de linhas por resposta
+     (o padrão do projeto pode ser 300, 1000...). Quem lia a resposta direto
+     ficava preso nesse teto — era a causa do "somente 300 lançamentos".
+     Aqui percorremos as páginas via header Range até acabar.
+     Se a query já traz um `limit` próprio, respeitamos e não paginamos. */
+  PAGINA: 1000,
+
   async select(table, query = '') {
-    const r = await fetch(`${this.url}/rest/v1/${table}${query}`, {
-      headers: this.headers(),
-    });
-    if (!r.ok) throw new Error(`sb.select ${table}: ${r.status} ${await r.text()}`);
-    return r.json();
+    if (/[?&]limit=/.test(query)) {
+      const r = await fetch(`${this.url}/rest/v1/${table}${query}`, { headers: this.headers() });
+      if (!r.ok) throw new Error(`sb.select ${table}: ${r.status} ${await r.text()}`);
+      return r.json();
+    }
+
+    /* paginação só é estável com ordenação definida */
+    let q = query;
+    if (!/[?&]order=/.test(q)) q += (q.includes('?') ? '&' : '?') + 'order=id.asc';
+
+    const linhas = [];
+    for (let de = 0; ; de += this.PAGINA) {
+      const ate = de + this.PAGINA - 1;
+      const r = await fetch(`${this.url}/rest/v1/${table}${q}`, {
+        headers: this.headers({ 'Range-Unit': 'items', 'Range': `${de}-${ate}` }),
+      });
+      /* 416 = pedimos uma faixa depois da última linha: acabou */
+      if (r.status === 416) break;
+      if (!r.ok) throw new Error(`sb.select ${table}: ${r.status} ${await r.text()}`);
+      const pagina = await r.json();
+      linhas.push(...pagina);
+      if (pagina.length < this.PAGINA) break;
+    }
+    return linhas;
   },
 
   /* INSERT — retorna objeto inserido */
@@ -2424,6 +2511,13 @@ const CLIENTES_BASE = [
   "Turim Bella","Um Metro","Uni Brasil","Vila Beach","Zeka","Rough Collie",
 ];
 
+/* Catálogo vivo: quando há Supabase, vale a lista do banco;
+   sem conexão, cai no CATALOGO fixo acima. */
+let CATALOGO_DB = null;          // [nome, ...]
+let SKU_POR_NOME = null;         // { nome: sku }
+function catalogo()  { return CATALOGO_DB || CATALOGO; }
+function skuDoNome(nome) { return (SKU_POR_NOME && SKU_POR_NOME[nome]) || gerarSkuNome(nome); }
+
 /* ── Cache local (fallback offline + evitar re-fetches) ── */
 const cache = {
   clientes: [],
@@ -2522,15 +2616,27 @@ async function loadDataFromSupabase() {
       cache.clientes = loadClientes();
     }
 
-    // Último número de pedido do ano atual
+    // Catálogo de produtos do banco
+    const produtos = await sb.select('produtos',
+      '?select=id,sku,nome,peso_unitario&ativo=not.is.false&order=nome');
+    if (produtos.length) {
+      cache.produtos = produtos;
+      CATALOGO_DB    = produtos.map(p => p.nome);
+      SKU_POR_NOME   = Object.fromEntries(produtos.map(p => [p.nome, p.sku]));
+    }
+
+    // Último número de pedido do ano atual — o banco grava no formato AAAA-NNNN
     const ultimoPedido = await sb.select('pedidos',
-      `?select=numero&order=created_at.desc&limit=1&ano=eq.${cache.ano}`);
+      `?select=numero&ano=eq.${cache.ano}&order=numero.desc&limit=1`);
     if (ultimoPedido.length) {
-      const match = ultimoPedido[0].numero?.match(/^(\d+)\//);
-      if (match) cache.pedidoSeq = parseInt(match[1]);
+      const match = ultimoPedido[0].numero?.match(/(\d+)$/);
+      if (match) cache.pedidoSeq = parseInt(match[1], 10);
     }
 
     refreshNum();
+    // as telas já podem ter sido desenhadas com o cache antigo
+    renderClientesTable(document.getElementById('clientes-busca')?.value);
+    renderProdutosTable(document.getElementById('produtos-busca')?.value);
     setDbStatus('online');
   } catch(e) {
     console.error('Erro ao carregar dados:', e);
@@ -2555,9 +2661,11 @@ function setDbStatus(state) {
   txt.textContent = label;
 }
 
+function numeroPedido(seq, ano = cache.ano) {
+  return `${ano}-${String(seq).padStart(4, '0')}`;
+}
 function refreshNum() {
-  const n = String(cache.pedidoSeq + 1).padStart(4,'0');
-  document.getElementById('num-pedido').textContent = `${n}/${cache.ano}`;
+  document.getElementById('num-pedido').textContent = numeroPedido(cache.pedidoSeq + 1);
 }
 
 /* ══════════════════════════════════════════════════
@@ -2713,8 +2821,8 @@ async function confirmar() {
   if (btn) { btn.disabled = true; btn.textContent = 'Salvando...'; }
 
   cache.pedidoSeq++;
-  const num  = String(cache.pedidoSeq).padStart(4, '0');
   const ano  = cache.ano;
+  const num  = numeroPedido(cache.pedidoSeq, ano);
   const total = filled.reduce((s, i) => s + i.qty * i.peso * i.preco, 0);
 
   try {
@@ -2722,7 +2830,7 @@ async function confirmar() {
 
     // 1. Inserir cabeçalho do pedido
     const [pedidoRow] = await sb.insert('pedidos', {
-      numero:      `${num}/${ano}`,
+      numero:      num,
       ano,
       cliente_id:  selectedCliente.id,
       total,
@@ -2743,17 +2851,17 @@ async function confirmar() {
 
     refreshNum();
     limpar();
-    showToast(`Pedido ${num}/${ano} confirmado e salvo!`, 'ok');
+    showToast(`Pedido ${num} confirmado e salvo!`, 'ok');
 
   } catch(e) {
     if (e.message === 'offline' || e.message.includes('fetch')) {
       // Fallback offline — salva localmente e sincroniza depois
-      salvarLocal({ numero: `${num}/${ano}`, cliente_id: selectedCliente.id,
+      salvarLocal({ numero: num, cliente_id: selectedCliente.id,
                     cliente_nome: selectedCliente.nome, total,
                     itens: filled, ts: Date.now() });
       refreshNum();
       limpar();
-      showToast(`Pedido ${num}/${ano} salvo localmente (sem conexão)`, 'warn');
+      showToast(`Pedido ${num} salvo localmente (sem conexão)`, 'warn');
     } else {
       cache.pedidoSeq--;
       showToast('Erro ao salvar pedido: ' + e.message, 'err');
@@ -2850,8 +2958,39 @@ function closeModal() {
 function handleOverlayClick(e) {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
 }
+/* ── Teclado dentro de campos ──────────────────────────────────
+   Espaço, Enter e setas digitados dentro de um input/select/textarea
+   pertencem ao campo. Sem isso o evento sobe até a linha ou o card que
+   envolve o campo e dispara o onclick dele — era o que fazia o card
+   "travar"/fechar como se tivesse sido salvo ao digitar um espaço.
+   Capturamos na fase de captura para barrar antes de qualquer
+   handler de ancestral.                                          */
+const TECLAS_DO_CAMPO = [' ', 'Spacebar', 'Enter', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+function ehCampoDeTexto(el) {
+  if (!el) return false;
+  if (el.isContentEditable) return true;
+  const tag = el.tagName;
+  if (tag === 'TEXTAREA' || tag === 'SELECT') return true;
+  if (tag !== 'INPUT') return false;
+  /* checkbox e radio usam o espaço para marcar — deixamos passar */
+  return !['checkbox', 'radio', 'button', 'submit', 'reset'].includes(el.type);
+}
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (!ehCampoDeTexto(e.target)) return;
+  if (!TECLAS_DO_CAMPO.includes(e.key)) return;
+  e.stopPropagation();
+}, true);
+
+/* ── Escape fecha só o modal que está aberto por cima ── */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const topo = ['modal-cliente', 'modal-pw', 'modal-overlay']
+    .map(id => document.getElementById(id))
+    .find(el => el && el.classList.contains('open'));
+  if (!topo) return;
+  if (topo.id === 'modal-cliente') closeCliente();
+  else if (topo.id === 'modal-pw')  closeChangePw();
+  else                              closeModal();
 });
 
 function switchInt(tab, panel) {
@@ -3332,7 +3471,7 @@ function renderProdutosTable(busca) {
   const countEl = document.getElementById('produtos-count');
   if (!tbody) return;
 
-  let lista = [...CATALOGO].sort((a,b) => a.localeCompare(b, 'pt-BR'));
+  let lista = [...catalogo()].sort((a,b) => a.localeCompare(b, 'pt-BR'));
 
   if (busca && busca.trim()) {
     const t = busca.toLowerCase().trim();
@@ -3347,7 +3486,7 @@ function renderProdutosTable(busca) {
   }
 
   tbody.innerHTML = lista.map(nome => {
-    const sku = gerarSkuNome(nome);
+    const sku = skuDoNome(nome);
     return `<tr>
       <td class="td-sku">${sku}</td>
       <td class="td-name">${nome}</td>
@@ -3392,20 +3531,28 @@ function handleClienteOverlay(e) {
   if (e.target === document.getElementById('modal-cliente')) closeCliente();
 }
 
+/* aspas simples do nome precisam sair escapadas dentro do onclick */
+function escAspas(t) {
+  return String(t).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
 function filtrarCatalogo(busca) {
   const lista = document.getElementById('prod-lista-catalogo');
   const termo = busca.toLowerCase().trim();
   const itens = termo
-    ? CATALOGO.filter(p => p.toLowerCase().includes(termo))
-    : CATALOGO;
+    ? catalogo().filter(p => p.toLowerCase().includes(termo))
+    : catalogo();
 
+  const rolagem = lista.scrollTop;   // não perder a posição da lista ao marcar
   lista.innerHTML = itens.map(nome => {
     const sel = _editSelecionados.some(s => s.nome === nome);
-    return `<div class="prod-lista-item ${sel ? 'selected' : ''}" onclick="toggleProdCatalogo('${nome.replace(/'/g,"\'")}')">
-      <input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation();toggleProdCatalogo('${nome.replace(/'/g,"\'")}')">
+    const arg = escAspas(nome);
+    return `<div class="prod-lista-item ${sel ? 'selected' : ''}" onclick="toggleProdCatalogo('${arg}')">
+      <input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation();toggleProdCatalogo('${arg}')">
       <span>${nome}</span>
     </div>`;
   }).join('');
+  lista.scrollTop = rolagem;
 }
 
 function toggleProdCatalogo(nome) {
@@ -3464,7 +3611,7 @@ function salvarCliente() {
     prazo:    document.getElementById('ec-prazo').value,
     produtos: _editSelecionados.map(p => ({
       nome:  p.nome,
-      sku:   gerarSkuNome(p.nome),
+      sku:   skuDoNome(p.nome),
       preco: parseFloat(p.preco) || 0,
       peso:  0,
     })),
