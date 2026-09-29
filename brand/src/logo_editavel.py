@@ -33,7 +33,9 @@ CORES_OFICIAIS = {
     "fundo": H.GRAFITE,
     "seta_1": H.RECICLA_CLARO,
     "seta_2": H.RECICLA_MEDIO,
-    "seta_3": H.RECICLA_CLARO,
+    # Um tom abaixo da seta 1 (diferença invisível): o Canva agrupa a edição de
+    # cor de um SVG por valor de cor, então cores iguais mudariam juntas.
+    "seta_3": "#D8D8D8",
     "texto": H.BRANCO,
 }
 
